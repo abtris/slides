@@ -1,0 +1,5 @@
+This slides uses "W3C Slidy":http://www.w3.org/Talks/Tools/Slidy/#%281%29 slides and "JUSH":http://jush.sourceforge.net/ syntax highlighter.
+
+For code use: &lt;code class=&quot;jush&quot;&gt;&lt;/code&gt; or &lt;pre class=&quot;jush&quot;&gt;&lt;xmp&gt;&lt;/xmp&gt;&lt;/pre&gt; for html and not escaped code. I user classes (jush for html, jush-php for php, jush-phpini for php ini, jush-js for javascript.
+
+ 
