@@ -239,8 +239,8 @@ if ($loggedin) {
         <pre class="jush">
         http://localhost/?loggedin=1</pre>
 
-		<p>V php.ini je register_globals od 4.2 standardně vypnuté, ale určitě je dobré to zkontrolovat a určitě nepoužívat software, který register globals vyžaduje zapnuté.</p>
-		<p>V PHP 5.3 je register_globals označeno jako DEPRECATED, podobně jako další directivy (<code class="jush-phpini">register_long_arrays, auto_globals_jit</code>).
+		<p>V php.ini je nastavení register_globals od 4.2 standardně vypnuté, ale určitě je dobré to zkontrolovat a určitě nepoužívat software, který register globals vyžaduje zapnuté.</p>
+		<p>V PHP 5.3 je nastavení register_globals označeno jako DEPRECATED, podobně jako další directivy (<code class="jush-phpini">register_long_arrays, auto_globals_jit</code>).
     </div>
 
 <div class="slide">
@@ -249,7 +249,7 @@ if ($loggedin) {
     <ul>
         <li>Spoofed Forms</li>
             <ul>
-                <li>překonáte lehce konroly na straně klienta (JS validace, formlářové validace v browseru)</li>
+                <li>překonáte lehce konroly na straně klienta (JS validace, formulářové validace v browseru)</li>
 				<li>je dobré se bránit například pomocí kontroly <code class="jush-php">$_SERVER['REFERER']</code> </li>
             </ul>       
         <li>Cross-site scripting</li>
